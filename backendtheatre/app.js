@@ -8,7 +8,11 @@ app.use(morgan('dev'));
 require("./db/dbconnection")
 app.use(cors());
 const custapi=require('./Routes/customerRouter');
+const logapi=require('./Routes/loginRouter')
+const movieapi=require('./Routes/movieRouter')
 app.use('/api',custapi);
+app.use('/api',logapi);
+app.use('/api',movieapi);
 const PORT=process.env.PORT;
 app.listen(PORT,()=>{
     console.log(`Server is running at port ${PORT}`);

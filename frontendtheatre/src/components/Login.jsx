@@ -22,23 +22,24 @@ const Login = () => {
     const loginHandler=()=>{
         axios.post("http://localhost:7000/api/login",user)
         .then((response)=>{
-          if(response.data.message==="Login Successfully"){
+          if(response.data.message==="Admin Login suceesfull"){
             const token=response.data.token;
             const userId=response.data.data._id
             console.log(token)
             console.log(userId)
             sessionStorage.setItem("usertoken",token);
             sessionStorage.setItem("userId",userId)
-            const messageFromBackend = response.data.message;
-            setmessageFromBackend(messageFromBackend);
-            setTimeout(() => {
-                navigate('/');
-                }, 2000);
-           // alert(response.data.message);
-            // if(user.username==="lisha"&& user.password==="admin123")
-            // {navigate('/viewEmpAd')}
-            // else
-            // {navigate('/viewEmp')}
+            navigate('/adminview')
+          }
+          else{
+            if(response.data.message==="Customer Login successful"){
+              const token=response.data.token;
+              const userId=response.data.data._id
+              console.log(token)
+              console.log(userId)
+              sessionStorage.setItem("usertoken",token);
+              sessionStorage.setItem("userId",userId)
+              navigate('/customerview')
           }
           else{
             const message=response.data.message;
@@ -47,6 +48,7 @@ const Login = () => {
                 navigate('/');
                 }, 2000);
           }
+        }
         })
       }
     
