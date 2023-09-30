@@ -27,7 +27,7 @@ const Customerview = () => {
   return (
  
      <div> <Headercus/>
-    <div class="container">
+    <div class="container mt-4" >
      
     <div class="row">
         

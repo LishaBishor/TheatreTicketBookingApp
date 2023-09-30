@@ -6,12 +6,14 @@ category:String,
 Languages:String,
 poster:String,
 description:String,
+screen:String,
+timings:[String],
 castdetails:
     
         [{actorname: String,actorimage: String }]  
     
 ,
-moviereviews:[String]
+userfeedback:[{username:String,review:String,addreview:String,rating:Number}]
 });
 
 const movieData=mongoose.model('moviedetail',movieSchema);

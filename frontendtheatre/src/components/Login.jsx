@@ -20,25 +20,40 @@ const Login = () => {
     }
 
     const loginHandler=()=>{
+      if (user.username == null || user.password == null ) {
+        setTimeout(() => {
+            const messageFromBackend = 'Please fill in all the fields.';
+            setMessage(messageFromBackend);
+        }, 500);
+        setTimeout(() => {
+            window.location.reload(false);
+        }, 5000);
+    }
+    else{
         axios.post("http://localhost:7000/api/login",user)
         .then((response)=>{
           if(response.data.message==="Admin Login suceesfull"){
             const token=response.data.token;
             const userId=response.data.data._id
+            const username=response.data.data.username
             console.log(token)
             console.log(userId)
             sessionStorage.setItem("usertoken",token);
             sessionStorage.setItem("userId",userId)
+            sessionStorage.setItem("username",username)
+            
             navigate('/adminview')
           }
           else{
             if(response.data.message==="Customer Login successful"){
               const token=response.data.token;
               const userId=response.data.data._id
+              const username=response.data.data.username
               console.log(token)
               console.log(userId)
               sessionStorage.setItem("usertoken",token);
               sessionStorage.setItem("userId",userId)
+              sessionStorage.setItem("username",username)
               navigate('/customerview')
           }
           else{
@@ -50,6 +65,7 @@ const Login = () => {
           }
         }
         })
+      }
       }
     
   return (
@@ -89,6 +105,11 @@ const Login = () => {
               <div style={{color:'green'}}>{messageFromBackend}</div>
                         <div style={{color:'red'}}>{message}</div>
               </div>
+              <div className="col-12 col-sm-6 col-md-6 col-lg-6">
+              <div style={{color:'white'}}>NewUser?</div>
+                        <div style={{color:'blue'}}><a href='/signup'>SignUp</a></div>
+              </div>
+             
               
             </div>
 

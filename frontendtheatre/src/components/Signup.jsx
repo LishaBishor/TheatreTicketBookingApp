@@ -11,6 +11,16 @@ const Signup = () => {
   const[inputs,setInputs]=useState({});
   const [message, setMessage] = useState('');
   const [messageFromBackend, setmessageFromBackend] = useState('');
+    // Frontend form validation
+    const emailRegex = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/;                        ///^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const indianPhoneRegex = /^(\+91)?[6-9]\d{9}$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+
+    const [emailError, setEmailError] = useState('');
+    const [phoneNoError, setphoneNoError] = useState('');
+    const [passwordError, setpasswordError] = useState('');
+    
+    
 
   const inputHandler=(e)=>{
     
@@ -21,7 +31,46 @@ const Signup = () => {
 }
 
 const submitHandler=()=>{
-  axios.post("http://localhost:7000/api/customerSignup",inputs)
+   // Front End Form Validation ;
+   console.log("clicked",inputs)
+   // empty inputs
+   if(inputs.email==null ||inputs.mobile==null || inputs.username==null || inputs.password==null){
+       setTimeout(() => {
+           const messageDisplay = 'Please fill in all the fields.';
+           setMessage(messageDisplay);
+       }, 1000);
+       setTimeout(() => {
+           const messageDisplay = '';
+           setMessage(messageDisplay);
+       }, 5000);
+           
+   }
+  //Checking emailid
+ else  if (!emailRegex.test(inputs.email)) {
+            setEmailError('Please enter a valid email address.');
+            setTimeout(() => {
+            setEmailError("");
+          }, 5000);
+       }
+   // Checking Phone number 
+     else if(!indianPhoneRegex.test(inputs.mobile)){
+            setphoneNoError('Please enter a valid phone number.');
+            setTimeout(() => {
+            setphoneNoError("");
+          }, 5000);
+      
+       }   
+   // Checking Password 
+     else if (!passwordRegex.test(inputs.password)) {
+            setpasswordError('Password should  be atleast 6 characters with an uppercase, a lower case, a letter, a digit and a special character  ');
+            setTimeout(() => {
+            setpasswordError("");
+           }, 5000);
+    
+       }
+       else{
+        //After form validation
+        axios.post("http://localhost:7000/api/customerSignup",inputs)
         .then((response)=>{
             console.log(response)
             if(response.data.message==="Registered Successfully"){
@@ -36,6 +85,7 @@ const submitHandler=()=>{
             }
         })
         .catch(err=>console.log(err))
+      }
     
 }
 
@@ -53,11 +103,13 @@ const submitHandler=()=>{
             </div>
               <div className="col-12 col-sm-6 col-md-6 col-lg-6">
               <label htmlFor=''className='form-label'>Email</label>  
-              <input type='text' className='form-control' name="email" onChange={inputHandler}  />
+              <input type='text' className='form-control' name="emailid" onChange={inputHandler}  />
+              <div style={{color:'red'}}>{emailError}</div>
               </div>
               <div className="col-12 col-sm-6 col-md-6 col-lg-6">
               <label htmlFor=''className='form-label'>MobileNumber</label>  
               <input type='text' className='form-control' name="mobile" onChange={inputHandler} />
+              <div style={{color:'red'}}>{phoneNoError}</div>
               </div>
               <div className="col-12 col-sm-6 col-md-6 col-lg-6">
               <label htmlFor=''className='form-label'>Username</label>  
@@ -66,6 +118,7 @@ const submitHandler=()=>{
               <div className="col-12 col-sm-6 col-md-6 col-lg-6">
               <label htmlFor=''className='form-label'>Password</label>  
               <input type='password' className='form-control' name="password" onChange={inputHandler}/>
+              <div style={{color:'red'}}>{passwordError}</div>
               </div>
               <div className="col-12 col-sm-12 col-md-12 col-lg-12">
                 <label htmlFor="" className="form-label">Address</label>

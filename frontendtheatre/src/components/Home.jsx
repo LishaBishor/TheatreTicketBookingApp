@@ -9,7 +9,11 @@ const Home = () => {
   return (
     <div>
       <Header/>
-      <br/>
+      <div class="separator bg-white">
+            <div  id='row1'class="row bg-white" style={{Color:'white'}}>
+                <div class="col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" style={{backgroundColor:'grey',color:'grey'}}>111</div>
+            </div>
+        </div>
 <div id="carouselExample" class="carousel slide">
   <div class="carousel-inner">
     <div class="carousel-item active">

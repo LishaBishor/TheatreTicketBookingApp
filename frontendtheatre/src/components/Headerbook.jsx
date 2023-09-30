@@ -2,10 +2,10 @@ import React from 'react'
 import "./Header.css"
 import logo from "../Images/massmovies1.png"
 
-const Headermpage = () => {
+const Headerbook = () => {
   return (
     <div>
-         <nav class="navbar navbar-expand-lg navbar-dark ">
+        <nav class="navbar navbar-expand-lg navbar-dark ">
   <div class="container-fluid">
     <a class="navbar-brand" href="#"><img id="logo1" src={logo} class="d-block w-100" alt="..."/>  </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -13,10 +13,9 @@ const Headermpage = () => {
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-link active" aria-current="page" href="/">Home</a>
-        <a class="nav-link bg-danger" href="/bookticket" > BookTicket</a>
-        <a class="nav-link" href="/customerview"> Back</a>
-        <a class="nav-link" href="/"> Logout</a>
+        <a class="nav-link active" aria-current="page" href="/">     Home</a>
+        <a class="nav-link" href="/moviepage"> Back</a>
+        <a class="nav-link" href="/login"> Logout</a>
               
       </div>
     </div>
@@ -26,4 +25,4 @@ const Headermpage = () => {
   )
 }
 
-export default Headermpage
+export default Headerbook
