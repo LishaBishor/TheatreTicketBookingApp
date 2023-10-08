@@ -42,6 +42,7 @@ const Login = () => {
             sessionStorage.setItem("userId",userId)
             sessionStorage.setItem("username",username)
             
+            
             navigate('/adminview')
           }
           else{
@@ -49,11 +50,13 @@ const Login = () => {
               const token=response.data.token;
               const userId=response.data.data._id
               const username=response.data.data.username
+              const emailid=response.data.data.emailid
               console.log(token)
               console.log(userId)
               sessionStorage.setItem("usertoken",token);
               sessionStorage.setItem("userId",userId)
               sessionStorage.setItem("username",username)
+              sessionStorage.setItem("cusemail",emailid)
               navigate('/customerview')
           }
           else{

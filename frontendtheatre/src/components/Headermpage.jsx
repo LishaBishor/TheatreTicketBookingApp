@@ -3,6 +3,7 @@ import "./Header.css"
 import logo from "../Images/massmovies1.png"
 
 const Headermpage = () => {
+  
   return (
     <div>
          <nav class="navbar navbar-expand-lg navbar-dark ">
@@ -14,7 +15,8 @@ const Headermpage = () => {
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
         <a class="nav-link active" aria-current="page" href="/">Home</a>
-        <a class="nav-link bg-danger" href="/bookticket" > BookTicket</a>
+        <a class="nav-link" href="/bookticket" > BookTicket</a>
+        <a class="nav-link" href="/cancel">CancelTicket</a>
         <a class="nav-link" href="/customerview"> Back</a>
         <a class="nav-link" href="/"> Logout</a>
               

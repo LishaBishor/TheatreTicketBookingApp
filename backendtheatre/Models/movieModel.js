@@ -7,6 +7,9 @@ Languages:String,
 poster:String,
 description:String,
 screen:String,
+avgrating:Number,
+tktsold:Number,
+tktcharge:Number,
 timings:[String],
 castdetails:
     

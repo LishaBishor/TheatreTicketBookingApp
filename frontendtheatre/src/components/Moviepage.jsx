@@ -23,16 +23,19 @@ const Moviepage = () => {
     console.log(username)
     const [show, setShow] = useState(false);
     const [data, setData] = useState();
+    
 
     const fetchMoviedata=()=>{
         axios.get("http://localhost:7000/api/findthemovie/"+movieId)
        .then((response)=>{
+        console.log("hello")
         console.log(response.data)
        
         // const moviearray=[{id:response.data._id},{}]
        setMovies(response.data);
        setActors(response.data.castdetails)
        setFeedback(response.data.userfeedback)
+       sessionStorage.setItem("screen",response.data.screen)
        console.log(movies.moviename)
        console.log(movies.poster)
             
@@ -42,8 +45,13 @@ const Moviepage = () => {
    
 
     const navigateto=()=>{
-    
-        navigate('/bookticket')
+    let screen=sessionStorage.getItem('screen')
+    console.log(screen)
+    if(screen=='screen1')
+       {navigate('/bookticket')} 
+       else{
+        navigate('/screen3')
+       }
        
        }
        const handleClose = () => setShow(false);
@@ -61,7 +69,7 @@ const Moviepage = () => {
               rating:data.rating
        }
       }
-      axios.put("http://localhost:7000/api/upreview/"+movieId+"/"+userToken, feedbackdata)
+      axios.put("http://localhost:7000/api/upreview/"+movieId+"/"+data.rating+"/"+userToken, feedbackdata)
                .then(response => {
                 if(response.data.message=="updated")
                  {console.log(response);
@@ -181,8 +189,8 @@ const Moviepage = () => {
                {actors.map((value,index)=>{
                  return <div key={index} className="col ">
                 
-                  <div class="card  bg-dark">
-                    <img id="actorimage" style={{borderRadius:200}} src={value.actorimage} class="img-fluid rounded-start" alt="..." />
+                  <div class="card  bg-dark" style={{borderRadius:100}}>
+                    <img id="actorimage" style={{borderRadius:200,height:'100px',width:'100px'}} src={value.actorimage} class="img-fluid rounded-start" alt="..." />
                     <div class="card-body">
                       <h5 class="card-title" style={{ color: 'white'}}>{value.actorname}</h5>
                       

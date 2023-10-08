@@ -34,7 +34,7 @@ const submitHandler=()=>{
    // Front End Form Validation ;
    console.log("clicked",inputs)
    // empty inputs
-   if(inputs.email==null ||inputs.mobile==null || inputs.username==null || inputs.password==null){
+   if(inputs.emailid==null ||inputs.mobile==null || inputs.username==null || inputs.password==null){
        setTimeout(() => {
            const messageDisplay = 'Please fill in all the fields.';
            setMessage(messageDisplay);
@@ -46,7 +46,7 @@ const submitHandler=()=>{
            
    }
   //Checking emailid
- else  if (!emailRegex.test(inputs.email)) {
+ else  if (!emailRegex.test(inputs.emailid)) {
             setEmailError('Please enter a valid email address.');
             setTimeout(() => {
             setEmailError("");

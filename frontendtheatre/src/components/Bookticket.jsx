@@ -1,6 +1,8 @@
 import React, {useEffect, useState } from 'react'
 import "./Bookticket.css"
 import Headerbook from './Headerbook'
+import axios from 'axios';
+
 
 const Bookticket = () => {
   // const container=document.querySelector('.container');
@@ -12,19 +14,69 @@ const Bookticket = () => {
   const[count,setCount]=useState(+0);
  const[sum,setSum]=useState()
   const price=100;
+  const[timing,setTiming]=useState();
  
-   
-  // useEffect(()=>{
-  //   container.addEventListener('click',(e)=>{
-  //     console.log("hello")
-  //   })    
+  const[bookedseats,setBookedseats]=useState([]);
+  const[userToken,setUsertoken]=useState(sessionStorage.getItem('usertoken'))
+  const[cusemail,setCusemail]=useState(sessionStorage.getItem('cusemail'))
+  const[screen]=useState(sessionStorage.getItem('screen'));
+  const[movieId,setMovieid]=useState(sessionStorage.getItem("movieId"));
+
+  const setTimings=(val)=>{
+    setTiming(val)
+  }
+ const fetchBookeddata=(val)=>{
+  
+       console.log(screen,timing)
+       setTiming(val)
+       
+        axios.get("http://localhost:7000/api/bookedseats/"+val+"/"+screen+"/"+userToken)
+       .then((response)=>{
+        console.log(response.data)
+       let bseats=response.data.bookedseats
+       console.log(bseats)
+       setBookedseats(bseats);
+       sessionStorage.setItem("booked",bookedseats);
+       localStorage.setItem("booked",bookedseats)
+       console.log("starting"+bookedseats);
+          displayBooked(bookedseats)
+      
+      
+       })
+    }
     
-// },[])
+ useEffect(()=>{
+       // fetchBookeddata();       
+       // displayBooked(bookedseats);
+    },[])
+ 
 
 const classchange=()=>{
  // console.log(target.class)
 }
-const afterpay=(selected)=>{
+const submitHandler=(selected)=>{
+  if(selected.length!=0){
+  console.log(selected, timing,screen )
+  let data={"bookedseats":selected}
+  console.log(data)
+  axios.put("http://localhost:7000/api/ticketbook/"+timing+"/"+screen+"/"+movieId+"/"+userToken, data)
+  .then(response => {
+   if(response.data.message=="Booking confirmed")
+    {console.log(response);
+     alert(response.data.message);
+   //   window.location.reload(false);
+   } 
+   else{alert(response.data.message)}
+  })
+
+  axios.post("http://localhost:7000/api/send/"+selected+"/"+cusemail)
+  .then(response=>{
+    if(response.data.message=="email sent"){
+      alert(response.data.message)
+    }
+
+  })
+
   selected.forEach(element => {
     const sselected=document.getElementById(element)
     sselected.style.backgroundColor='white';
@@ -32,10 +84,29 @@ const afterpay=(selected)=>{
     sselected.style.transform='scale(1)';
     
   });
-  alert(`You successfully booked ${count} seats`)
+ // alert(`You successfully booked ${count} seats`)
   setCount(+0);
   setSum("");
-  setSelected([]);
+ setSelected([]);
+}
+else{
+  alert('You didnot select any seat, please select')
+}
+}
+
+const displayBooked=(selected)=>{
+  console.log("hell")
+   selected.forEach(element => {
+    const sselected=document.getElementById(element)
+    sselected.style.backgroundColor='white';
+    sselected.style.cursor='default';
+    sselected.style.transform='scale(1)';
+    
+  });
+  // alert(`You successfully booked ${count} seats`)
+  // setCount(+0);
+  // setSum("");
+  // setSelected([]);
  // window.location.reload(false);
 // const seatss= document.getElementsByClassName('seat.selected');
  //console.log(seatss)
@@ -53,10 +124,11 @@ const seatdetails=(e,val)=>{
     setSelected(selected => [...selected,val])
     
     //setCount(selected.length)
+   // let c=count
     setCount(count+1);
-    let c=count
-    
-     setSum(c*price);
+   let c=count
+    console.log(count,price)
+     setSum((selected.length+1)*price);
             
     console.log("seat"+seat)
      e.target.style.backgroundColor="blue"
@@ -65,9 +137,10 @@ const seatdetails=(e,val)=>{
     e.target.style.backgroundColor="gray"
     let seat=""
     setCount(count-1);
+    console.log(count,price)
     setSelected((selected)=>{return selected.filter((item)=>item!=val)})
     
-    setSum(count*price);
+    setSum((selected.length-1)*price);
   }
 }
   return (
@@ -82,8 +155,9 @@ const seatdetails=(e,val)=>{
 {/* movie timings */}
 <div class="timecontainer">
   <div class="rowt">
+    <div><h5 style={{color:'white'}}>Select showtime...</h5></div>
     <div class="col col-12 col-sm-3 col-md-3 col-lg-3 col-xl-3">
-      <button>9am</button><button>12pm</button><button>6.30pm</button><button>9.30pm</button>
+      <button onClick={()=>fetchBookeddata("9AM")}>9AM</button> <button disabled>12.30PM</button> <button disabled>6PM</button> <button disabled >9.30pm</button>
     </div>
   </div>
 </div>
@@ -184,8 +258,8 @@ const seatdetails=(e,val)=>{
         </div>
        
       </div>
-      <br /><div> <button id="paybutton" className="btn btn-danger" style={{backgroundColor:"#1AC25D", borderColor:"#1AC25D"}} onClick={()=>afterpay(selected)}>PayTicketAmount</button></div>
-      <br /><br /><br />
+      <br /><div> <button id="paybutton" className="btn btn-danger" style={{backgroundColor:"#1AC25D", borderColor:"#1AC25D"}} onClick={()=>submitHandler(selected)}>PayTicketAmount</button></div>
+      <br /><br />
       <p  class="text" style={{Color:'white'}}>You  have selected <span>{count}</span> seats <span>{selected}</span> for a price of Rs {sum}/-</p>
       <br />
       
